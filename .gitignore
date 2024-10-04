@@ -1,3 +1,10 @@
+.env
+.idea
+.env
+.idea.env
+.idea
+result
+
 # Logs
 logs
 *.log
