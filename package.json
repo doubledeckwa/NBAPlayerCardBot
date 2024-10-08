@@ -1,5 +1,5 @@
 {
-  "name": "discord",
+  "name": "discord_bron",
   "version": "1.0.0",
   "main": "bot.js",
   "scripts": {
@@ -18,6 +18,8 @@
     "sharp": "^0.33.5"
   },
   "devDependencies": {
+    "@eslint/js": "^9.12.0",
+    "eslint": "^9.12.0",
     "nodemon": "^3.1.7",
     "prettier": "3.3.3"
   }

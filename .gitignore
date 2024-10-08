@@ -1,8 +1,14 @@
+
+// files
+.gitignore
 .env
 .idea
-.env
-.idea.env
-.idea
+.eslint.config
+
+// folders
+
+node_modules
+template
 result
 
 # Logs
