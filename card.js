@@ -36,12 +36,12 @@ async function createCard(data, callback) {
   if (data.country) {
     try {
       const flagPath = path.join('./flags', `${data.country}.png`)
-      console.log('Attempting to load flag from:', flagPath);
+      console.log('Attempting to load flag from:', flagPath)
       if (fs.existsSync(flagPath)) {
-        console.log('Flag file exists');
+        console.log('Flag file exists')
         const flagImage = await loadImage(flagPath)
-        ctx.drawImage(flagImage, 215, 200, 100, 60) // Позиция для флага страны
-        console.log('Flag drawn on canvas');
+        ctx.drawImage(flagImage, 185, 405, 100, 60) // Позиция для флага страны
+        console.log('Flag drawn on canvas')
       } else {
         console.error('Файл флага не найден:', flagPath)
       }
@@ -49,7 +49,7 @@ async function createCard(data, callback) {
       console.error('Ошибка при загрузке флага страны:', e)
     }
   } else {
-    console.log('No country data provided');
+    console.log('No country data provided')
   }
 
   // Функция для отображения имени с динамическим изменением размера шрифта
@@ -61,7 +61,7 @@ async function createCard(data, callback) {
 
     // Проверяем ширину текста и уменьшаем шрифт, если по бокам менее 50px
     while (textWidth > maxWidth - 275) {
-      // Условие: 100px = 50px с каждой стороны
+      // Условие: 275px = 137.5px с каждой стороны
       fontSize -= 2 // Уменьшаем шрифт на 2px
       ctx.font = `${fontSize}px "Unbounded"`
       textWidth = ctx.measureText(name).width
@@ -91,46 +91,50 @@ async function createCard(data, callback) {
     { key: 'PAS', x: 500, y: 665 },
     { key: 'THR', x: 500, y: 715 },
     { key: 'DEF', x: 500, y: 770 },
-    { key: 'PPG', x: 500, y: 850 },
+    { key: 'PPG', x: 500, y: 845 },
   ]
 
   const statValues = [
-    { value: overallRating, x: 215, y: 150, isLarge: true }, // Overall rating
-    { value: data.height, x: 400, y: 515 },
-    { value: data.age, x: 215, y: 565 },
-    { value: (data.pos || '').toUpperCase(), x: 435, y: 565, isLarge: true }, // POS
-    { value: data.phy, x: 215, y: 665 },
-    { value: data.int, x: 215, y: 715 },
-    { value: data.dri, x: 215, y: 770 },
-    { value: data.ft, x: 215, y: 850 },
-    { value: data.pas, x: 435, y: 665 },
-    { value: data.thr, x: 435, y: 715 },
-    { value: data.def, x: 435, y: 770 },
-    { value: data.ppg, x: 435, y: 850 },
+    { value: overallRating, x: 185, y: 190, isLarge: true },
+    { value: data.height, x: 185, y: 385 },
+    { value: data.age, x: 185, y: 320 },
+    { value: (data.pos || '').toUpperCase(), x: 185, y: 260, isLarge: true }, // POS
+    { value: data.phy, x: 205, y: 665 },
+    { value: data.int, x: 205, y: 715 },
+    { value: data.dri, x: 205, y: 770 },
+    { value: data.ft, x: 205, y: 850 },
+    { value: data.pas, x: 415, y: 665 },
+    { value: data.thr, x: 415, y: 715 },
+    { value: data.def, x: 415, y: 770 },
+    { value: data.ppg, x: 415, y: 845 },
   ]
 
   // Отрисовка значений
   statValues.forEach((stat) => {
     if (stat.isLarge) {
       ctx.font = '50px "Unbounded"'
-      ctx.lineWidth = 8 // Увеличиваем толщину обводки для крупного текста
+      ctx.lineWidth = 6 // Толщина обводки для крупного текста
     } else {
-      ctx.font = '28px "Unbounded"'
-      ctx.lineWidth = 6
+      ctx.font = '30px "Unbounded"'
+      ctx.lineWidth = 3
     }
 
     ctx.fillStyle = '#FDB927' // Цвет текста FDB927
     ctx.strokeStyle = 'rgba(85, 37, 131, 0.68)' // Stroke с прозрачностью 68%
 
-    ctx.strokeText(`${stat.value}`, stat.x, stat.y)
-    ctx.fillText(`${stat.value}`, stat.x, stat.y)
+    // Выравниваем текст по центру
+    ctx.textAlign = 'center'
+
+    ctx.strokeText(`${stat.value}`, stat.x + 50, stat.y) // Изменяем позицию текста
+    ctx.fillText(`${stat.value}`, stat.x + 50, stat.y) // Изменяем позицию текста
   })
 
   // Отрисовка лейблов
-  ctx.font = '28px "Unbounded"'
+  ctx.font = '30px "Unbounded"'
   ctx.fillStyle = '#FDB927' // Цвет текста FDB927
   ctx.strokeStyle = 'rgba(85, 37, 131, 0.68)' // Stroke с прозрачностью 68%
-  ctx.lineWidth = 6 // Толщина линии окантовки 6px для эффекта outside
+  ctx.textAlign = 'left' // Возвращаем выравнивание текста влево
+  ctx.lineWidth = 3 // Толщина линии окантовки 2px для эффекта outside
   statLabels.forEach((stat) => {
     ctx.strokeText(`${stat.key}`, stat.x, stat.y)
     ctx.fillText(`${stat.key}`, stat.x, stat.y)
@@ -153,3 +157,5 @@ async function createCard(data, callback) {
 }
 
 module.exports = { createCard }
+
+

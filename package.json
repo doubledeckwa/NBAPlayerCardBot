@@ -1,13 +1,13 @@
 {
-  "name": "discord_bron",
-  "version": "1.0.0",
+  "name": "bronshyne-player-card-bot",
+  "version": "0.0.1",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js",
     "devStart": "nodemon bot.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Alexander Morozov //alsmoros@icloud.com",
   "license": "ISC",
   "description": "",
   "dependencies": {

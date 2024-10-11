@@ -5,11 +5,6 @@ const path = require('path')
 const { REST, Routes } = require('discord.js')
 
 const flagsDir = './flags'
-const availableFlags = fs
-  .readdirSync(flagsDir)
-  .filter((file) => file.endsWith('.png'))
-  .map((file) => path.parse(file).name)
-  .slice(0, 25) // Ограничиваем количество флагов до 25
 
 const commands = [
   {
@@ -18,7 +13,7 @@ const commands = [
     options: [
       {
         name: 'country',
-        description: 'Enter your country (or type "list" to see available options)',
+        description: 'Enter your country',
         type: 3, // STRING type
         required: true,
       },
@@ -26,9 +21,7 @@ const commands = [
   },
 ]
 
-const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN)
-
-;(async () => {
+const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN)(async () => {
   try {
     console.log('Начинаю регистрацию команды /create_card.')
 
