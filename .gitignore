@@ -1,3 +1,16 @@
+
+// files
+.gitignore
+.env
+.idea
+.eslint.config
+
+// folders
+
+node_modules
+template
+result
+
 # Logs
 logs
 *.log
