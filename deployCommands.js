@@ -1,10 +1,5 @@
 require('dotenv').config()
-const fs = require('fs')
-const path = require('path')
-
 const { REST, Routes } = require('discord.js')
-
-const flagsDir = './flags'
 
 const commands = [
   {
@@ -13,15 +8,16 @@ const commands = [
     options: [
       {
         name: 'country',
-        description: 'Enter your country',
-        type: 3, // STRING type
+        description: 'Enter your country, for help see FAQ',
+        type: 3,
         required: true,
       },
     ],
   },
 ]
 
-const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN)(async () => {
+const rest = new REST({ version: '10' })
+rest.setToken(process.env.BOT_TOKEN)(async () => {
   try {
     console.log('Начинаю регистрацию команды /create_card.')
 

@@ -4,6 +4,7 @@ const { askNextQuestion } = require('./session') // Импортируем фу�
 const { createCard } = require('./card') // Импортируем функции из card.js
 
 const token = process.env.BOT_TOKEN
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -12,7 +13,7 @@ const client = new Client({
   ],
 })
 
-let activeSessions = new Map() // Сохраняем пользователей
+let activeSessions = new Map() // Очень круто сохраняем пользователей
 
 client.once('ready', () => {
   console.log('Bot is ready')
@@ -38,7 +39,7 @@ client.on('interactionCreate', async (interaction) => {
     const questions = [
       {
         key: 'name',
-        question: 'What is your name? (if no answer provided, "LEPOOKIE" will be used)',
+        question: 'What is your name ?',
       },
       { key: 'pos', question: 'What is your position ?' },
       { key: 'age', question: 'How old are you ?' },
@@ -54,7 +55,7 @@ client.on('interactionCreate', async (interaction) => {
       {
         key: 'photo',
         question:
-          'Please upload a photo for the card. (Send `NO` character in case you want to use your own Discord avatar, ONLY TRANSPARENT BACKGROUND)',
+          'Please upload a photo for the card. (Send `NO` character in case you want to use your own Discord avatar.)',
       },
     ]
 

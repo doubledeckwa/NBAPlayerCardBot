@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
 // Функция для следующего вопроса
 async function askNextQuestion(interaction, userId, questions, activeSessions, createCard) {
@@ -35,6 +35,24 @@ async function askNextQuestion(interaction, userId, questions, activeSessions, c
       await interaction.followUp('You did not respond in time. Session ended.');
       activeSessions.delete(userId);
       return;
+    }
+
+    if (interaction.channel.permissionsFor(interaction.client.user).has('MANAGE_MESSAGES')) {
+      try {
+        await response.delete();
+      } catch (error) {
+        console.log('Ошибка при удалении сообщения:', error);
+      }
+    } else {
+      console.log('Недостаточно разрешений для удаления сообщений');
+    }
+
+    if (interaction.replied) {
+      try {
+        await interaction.deleteReply();
+      } catch (error) {
+        console.log('Ошибка при удалении сообщения:', error);
+      }
     }
 
     if (key === 'photo') {
@@ -73,7 +91,7 @@ async function askNextQuestion(interaction, userId, questions, activeSessions, c
       } else if (key === 'pos') {
         const validPositions = ['PG', 'SG', 'SF', 'PF', 'C'];
         if (!validPositions.includes(input.toUpperCase())) {
-          await interaction.followUp('Invalid position! Please enter PG, SG, SF, PF, or C.');
+          await interaction.followUp('Invalid position! Please enter one of the following: PG, SG, SF, PF, C.');
           return askNextQuestion(interaction, userId, questions, activeSessions, createCard);
         }
         session.data[key] = input.toUpperCase();
@@ -83,11 +101,10 @@ async function askNextQuestion(interaction, userId, questions, activeSessions, c
     }
 
     session.step++;
-    askNextQuestion(interaction, userId, questions, activeSessions, createCard);
+    return askNextQuestion(interaction, userId, questions, activeSessions, createCard);
   } catch (error) {
-    console.error('Error while processing question:', error)
-    await interaction.followUp('Error while processing question. Session ended, try again next time.');
+    console.error(error);
   }
 }
 
-module.exports = { askNextQuestion };
+module.exports = { askNextQuestion }
