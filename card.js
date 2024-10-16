@@ -52,6 +52,26 @@ async function createCard(data, callback) {
     console.log('No country data provided')
   }
 
+  // Загрузка фото команды
+  if (data.team) {
+    try {
+      const teamPath = path.join('./teams', `${data.team}.png`)
+      console.log('Attempting to load team image from:', teamPath)
+      if (fs.existsSync(teamPath)) {
+        console.log('Team image file exists')
+        const teamImage = await loadImage(teamPath)
+        ctx.drawImage(teamImage, 185, 420, 100, 60) // Позиция для фото команды
+        console.log('Team image drawn on canvas')
+      } else {
+        console.error('Файл изображения команды не найден:', teamPath)
+      }
+    } catch (e) {
+      console.error('Ошибка при загрузке изображения команды:', e)
+    }
+  } else {
+    console.log('No team data provided')
+  }
+
   // Функция для отображения имени с динамическим изменением размера шрифта
   function drawName(ctx, name, maxWidth, yPosition) {
     let fontSize = 70 // Начальный размер шрифта
@@ -115,7 +135,7 @@ async function createCard(data, callback) {
       ctx.font = '50px "Unbounded"'
       ctx.lineWidth = 6 // Толщина обводки для крупного текста
     } else {
-      ctx.font = '30px "Unbounded"'
+      ctx.font = '36px "Unbounded"'
       ctx.lineWidth = 3
     }
 
@@ -130,7 +150,7 @@ async function createCard(data, callback) {
   })
 
   // Отрисовка лейблов
-  ctx.font = '30px "Unbounded"'
+  ctx.font = '36px "Unbounded"'
   ctx.fillStyle = '#FDB927' // Цвет текста FDB927
   ctx.strokeStyle = 'rgba(85, 37, 131, 0.68)' // Stroke с прозрачностью 68%
   ctx.textAlign = 'left' // Возвращаем выравнивание текста влево
