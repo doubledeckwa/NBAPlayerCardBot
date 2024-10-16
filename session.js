@@ -11,6 +11,9 @@ async function askNextQuestion(interaction, userId, questions, activeSessions, c
     if (currentStep >= questions.length) {
       await interaction.followUp('Creating the card...');
       return createCard(session.data, async (imagePath) => {
+        if (!fs.existsSync(imagePath)) {
+          throw new Error('Image path does not exist');
+        }
         await interaction.followUp({ files: [imagePath] });
         activeSessions.delete(userId);
       });
@@ -35,24 +38,6 @@ async function askNextQuestion(interaction, userId, questions, activeSessions, c
       await interaction.followUp('You did not respond in time. Session ended.');
       activeSessions.delete(userId);
       return;
-    }
-
-    if (interaction.channel.permissionsFor(interaction.client.user).has('MANAGE_MESSAGES')) {
-      try {
-        await response.delete();
-      } catch (error) {
-        console.log('Ошибка при удалении сообщения:', error);
-      }
-    } else {
-      console.log('Недостаточно разрешений для удаления сообщений');
-    }
-
-    if (interaction.replied) {
-      try {
-        await interaction.deleteReply();
-      } catch (error) {
-        console.log('Ошибка при удалении сообщения:', error);
-      }
     }
 
     if (key === 'photo') {
@@ -101,9 +86,11 @@ async function askNextQuestion(interaction, userId, questions, activeSessions, c
     }
 
     session.step++;
-    return askNextQuestion(interaction, userId, questions, activeSessions, createCard);
+    activeSessions.set(userId, session); // Сохраняем обновленную сессию
+    await askNextQuestion(interaction, userId, questions, activeSessions, createCard);
   } catch (error) {
     console.error(error);
+    await interaction.followUp('Произошла ошибка при обработке вашего ответа. Попробуйте еще раз.');
   }
 }
 
