@@ -154,6 +154,10 @@ async function createCard(data, callback) {
   const buffer = canvas.toBuffer('image/png')
   fs.writeFileSync(resultPath, buffer)
   callback(resultPath) // Возвращаем путь к сохраненному изображению
+
+  const outputPath = path.join(__dirname, 'output', fileName)
+  await canvas.saveAs(outputPath)
+  return outputPath
 }
 
 module.exports = { createCard }
